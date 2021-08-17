@@ -2,6 +2,7 @@
 #define WIDGET_H
 #include <QSerialPort>
 #include <QWidget>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
@@ -15,6 +16,7 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
     static QSerialPort* m_serial;
+     QTimer *my_timer;
 
     static int send_over_serial(const char* data, int size);
     static const  char *recived_over_serial(void);
@@ -37,8 +39,13 @@ private slots:
     void on_pushButton_8_clicked();
 
     void on_pushButton_9_clicked();
+public slots:
+    void handleTimeout();
+
+
 
 private:
     Ui::Widget *ui;
+
 };
 #endif // WIDGET_H

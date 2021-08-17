@@ -33,7 +33,229 @@ static unsigned short computeCRC16(uint8_t* array, int length)
 
     return CRC16;
 }
-void data_read(const char * data);
+void turnstile_version(const char* data){
+    switch (data[4]) {
+    case 1:
+        printf("Aktüel ..");
+       case 2:
+        printf("Kanatli ...");
+    }
+}
+void turnstil_time_res(const char* data){
+    printf("%s",data);
+}
+void turnstile_timeout_read(const char* data){
+    printf("%s",data);
+}
+void turnstile_serial_num(const char*data){
+    printf("%s",data);
+}
+void turnstile_mod(const char* data){
+    switch (data[3]) {
+        case 0x01:
+            printf( "Normalde Kapali");
+
+            break;
+        case 0x02:
+            printf( "Normalde Acik");
+            break;
+        default:
+            break;
+        }
+
+        switch (data[4]) {
+        case 0x01:
+            printf( "Giris/Cikis Serbest");
+            break;
+        case 0x02:
+            printf( "Giris/Cikis Blokeli");
+            break;
+        case 0x03:
+            printf( "Giris/Cikis Kontrollu");
+        default:
+            break;
+        }
+        printf( "Timeout Suresi(ms) " , data[5] * 100);
+        printf( "Fotosel Ariza Timeout Suresi(ms) " , data[6] * 100);
+        printf( "Seri Gecis Sayisi " , data[7]);
+}
+void turnstile_fotosel_state(const char* data){
+    for (int i = 3; i < 11; ++i)
+       {
+           if (data[i] & 1)
+           {
+               //printf( i - 2 << ".Fotosel Cisim Algiladi");
+           }
+           else
+           {
+               //printf( i - 2 << ".Fotosel Cisim Algilamadi";
+           }
+       }
+}
+void turnstile_pass_state(const char* data){
+    switch (data[3]) {
+        case 0x03:
+            printf( "Ariza ve Alarm var");
+            break;
+        case 0x02:
+            printf( "Alarm Var");
+            break;
+        case 0x01:
+            printf( "Ariza Var");
+            break;
+        case 0x00:
+            printf( "Ariza, alarm yok");
+            break;
+        default:
+            break;
+        }
+
+        //printf( "Gecebilecek Kisi Sayisi" << buf[4];
+
+        //Ariza Kodları
+
+        switch (data[5]) {
+        case 0x07:
+            printf( "Jeton Kutusu Dolu, Motor Arizali, Fotosel Arizali");
+            break;
+        case 0x06:
+            printf( "Jeton Kutusu Dolu, Motor Arizali");
+            break;
+        case 0x05:
+            printf( "Fotosel Arizali ve Jeton Kutusu Dolu");
+            break;
+        case 0x04:
+            printf( "Jeton Kutusu Dolu");
+            break;
+        case 0x03:
+            printf( "Fotosel ve Motor Arizali");
+            break;
+        case 0x02:
+            printf( "Motor Arizali");
+            break;
+        case 0x01:
+            printf( "Fotosel Arizali");
+            break;
+        case 0x00:
+            printf(  "Ariza Yok");
+            break;
+        default:
+            break;
+        }
+
+        //Alarm Kodları
+
+        switch (data[6]) {
+        case 0x07:
+            printf( "Jeton Kutusu Dolu, Motor Arizali, Fotosel Arizali");
+            break;
+        case 0x06:
+            printf( "Jeton Kutusu Dolu, Motor Arizali");
+            break;
+        case 0x05:
+            printf( "Fotosel Arizali ve Jeton Kutusu Dolu");
+            break;
+        case 0x04:
+            printf( "Jeton Kutusu Dolu");
+            break;
+        case 0x03:
+            printf( "Fotosel ve Motor Arizali");
+            break;
+        case 0x02:
+            printf( "Motor Arizali");
+            break;
+        case 0x01:
+            printf( "Fotosel Arizali");
+            break;
+        case 0x00:
+            printf(  "Ariza Yok");
+            break;
+        default:
+            break;
+        }
+
+        //Ariza Kodlari
+
+        switch (data[7]) {
+        case 0x0F:
+            printf( "Giris Zorlama, Kapak kapanmiyor, Yolcu Cikmadi, Acil Durum");
+            break;
+        case 0x0E:
+            printf( "Kapak kapanmiyor, Yolcu Cikmadi, Acil Durum");
+            break;
+        case 0x0D:
+            printf( "Acil Durum, Yolcu Cikmadi, Giriş Zorlama");
+            break;
+        case 0x0C:
+            printf( "Acil Durum, Yolcu Cikmadi");
+            break;
+        case 0x0B:
+            printf( "Kapak, Acil, Giris Zorlama");
+            break;
+        case 0x0A:
+            printf( "Kapak Kapanmiyor, Acil Durum");
+            break;
+        case 0x09:
+            printf( "Acil Durum, Giriş Zorlama");
+            break;
+        case 0x08:
+            printf(  "Acil Durum");
+            break;
+        case 0x07:
+            printf( "Yolcu Cikmadi, Kapak Kapanmiyor, Giris Zorlama");
+            break;
+        case 0x06:
+            printf( "Yolcu ve Kapak");
+            break;
+        case 0x05:
+            printf( "Yolcu ve Giris Zorlama");
+            break;
+        case 0x04:
+            printf( "Yolcu Cikmadi");
+            break;
+        case 0x03:
+            printf( "Kapak Kapanmiyor ve Giris Zorlama");
+            break;
+        case 0x02:
+            printf( "Kapak Kapanmiyor");
+            break;
+        case 0x01:
+            printf(  "Giris Zorlama");
+            break;
+        default:
+            break;
+        }
+}
+
+void turnstile_free_pass(const char* data){
+
+    if (data[3] == 0x00)
+    {
+        printf( "Birinci Basış Açma");
+    }
+
+    else if (data[3] == 0x01)
+    {
+        printf( "İkinci Basış Kapama");
+    }
+}
+void turnstile_flap_state(const char* data){
+    if (data[3] == 0x00)
+    {
+        printf( "Kanatlar Açık");
+    }
+
+    else if (data[3] == 0x01)
+    {
+        printf( "Kanatlar Kapali");
+    }
+}
+void data_read(const char * data){
+    typedef void(*FDATA)(const char *read_data);
+    FDATA f[]={NULL,turnstile_version,turnstile_serial_num,turnstile_mod,turnstile_fotosel_state,turnstile_pass_state,turnstil_time_res,turnstile_timeout_read,turnstile_free_pass,turnstile_flap_state};
+    f[data[2]](data);
+}
+
 
 const char* recived_serial_port(void){
     return recived_serial_cb();

@@ -58,20 +58,15 @@ typedef const char*(*recived_serial_test)(void);
 extern recived_serial_test recived_serial_cb;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void turnstile_version(const char *);
+void turnstile_serial_num(const char *);
+void turnstile_mod(const char *);
+void turnstile_fotosel_state(const char *);
+void turnstile_pass_state(const char *);
+void turnstil_time_res(const char *);
+void turnstile_timeout_read(const char *);
+void turnstile_free_pass(const char *);
+void turnstile_flap_state(const char *);
 
 
 
